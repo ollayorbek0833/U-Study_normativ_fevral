@@ -27,7 +27,7 @@ class Post(models.Model):
     content = models.TextField()
     created_at =models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
 
     objects = DeletedManager()
     all_objects = BaseQuerySet.as_manager()
