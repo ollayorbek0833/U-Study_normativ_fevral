@@ -27,7 +27,7 @@ class Post(models.Model):
     content = models.TextField()
     created_at =models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(default=False)
+    deleted_at = models.BooleanField(default=False)
 
     objects = DeletedManager()
     all_objects = BaseQuerySet.as_manager()
@@ -35,7 +35,7 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
-    def delete(self, using = None, keep_paren = False):
+    def delete(self, using = None, keep_parents = False):
         self.is_deleted = True
         self.save(update_fields=["is_deleted", "updated_at"])
         model_label = f"{self._meta.app_label}.{self.__class__.__name__}"
