@@ -1,17 +1,24 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>Delete Book</title>
-    </head>
-    <body>
-        <h1>Delete book</h1>
-        <p>Are you sure you want to delete: <b>{{book.title}}</b>?</p>
+{% extends "books/base.html" %}
 
-        <form method="post">
-            {%csrf_token%}
-            <button type="submit">Yes, delete</button>
-        </form>
-        <p><a href = "{%url 'books:list' %}">Cancel</p>
-    </body>
-</html>
+{% block title %}Delete Book{% endblock %}
+{% block page_heading %}Delete Book{% endblock %}
+
+{% block actions %}
+    <a class="btn btn-ghost" href="{% url 'books:list' %}">Back to list</a>
+{% endblock %}
+
+{% block content %}
+    <section class="surface danger-shell">
+        <p class="danger-kicker">Confirm action</p>
+        <h2 class="danger-title">Delete "{{ book.title }}"?</h2>
+        <p class="danger-copy">This action cannot be undone from this page.</p>
+
+        <div class="danger-actions">
+            <form method="post" class="inline-form">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit">Yes, delete book</button>
+            </form>
+            <a class="btn btn-ghost" href="{% url 'books:list' %}">Cancel</a>
+        </div>
+    </section>
+{% endblock %}

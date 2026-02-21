@@ -1,23 +1,36 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Books</title>
-    </head>
-    <body>
-        <h1>All Books</h1>
-        <p><a
-            href = "{%url 'books:create' %}">+Add book></a></p>
-        <ul>
-            {% for book in books %}
-            <li>
-                <b>{{book.title}}</b> - {{book.author}} - {{book.price}}
-                | <a href = "{% url 'books:edit' book.pk %}">edit</a>
-                | <a href = "{% url 'books:delete' book.pk %}"> delete</a>
-            </li>
-            {%empty%}
-            <li> No books yet</li>
-            {%endfor%}
-        </ul>
-    </body>
-</html>
+{% extends "books/base.html" %}
+
+{% block title %}All Books{% endblock %}
+{% block page_heading %}All Books{% endblock %}
+
+{% block actions %}
+    <a class="btn btn-primary" href="{% url 'books:create' %}">+ Add Book</a>
+{% endblock %}
+
+{% block content %}
+    <section class="surface card-stack">
+        {% if books %}
+            <ul class="book-grid">
+                {% for book in books %}
+                    <li class="book-card">
+                        <div>
+                            <h2 class="book-title">{{ book.title }}</h2>
+                            <p class="book-author">{{ book.author }}</p>
+                            <p class="book-price">{{ book.price }}</p>
+                        </div>
+
+                        <div class="card-actions">
+                            <a class="btn btn-secondary" href="{% url 'books:edit' book.pk %}">Edit</a>
+                            <a class="btn btn-danger-outline" href="{% url 'books:delete' book.pk %}">Delete</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="empty-state">
+                <h2>No books yet</h2>
+                <p>Add your first book to start building the collection.</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
