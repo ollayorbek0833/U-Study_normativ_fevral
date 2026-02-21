@@ -4,9 +4,9 @@ from . import views
 app_name = "books"
 
 urlpatterns = [
-    path("", views.book_list, name="list"),
-    path("create/", views.book_create, name="create"),
-    path("<int:pk>/edit/", views.book_update, name = "edit"),
-    path("<int:pk>/update/", views.book_update, name="update"),
-    path("<int:pk>/delete/", views.book_delete, name="delete"),
+    path("", views.BookListView.as_view(), name="list"),
+    path("create/", views.BookCreateView.as_view(), name="create"),
+    path("<int:pk>/edit/", views.BookUpdateView.as_view(), name = "edit"),
+    path("<int:pk>/update/", views.BookUpdateView.as_view(), name="update"),
+    path("<int:pk>/delete/", views.BookDeleteView.as_view() , name="delete"),
     ]
