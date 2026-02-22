@@ -1,8 +1,10 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 from books.forms import BookForm
-from books.models import Book
+from books.models import Book, Post
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
 # Create your views here.
@@ -42,3 +44,24 @@ class BookDeleteView(DeleteView):
     template_name = "books/book_confirm_delete.html"
     success_url =  reverse_lazy("books:list")
     context_object_name = 'book'
+
+
+def post_list(request):
+    q = request.GET.get("q","").strip()
+
+    queryset = Post.objects.order_by("-created_at")
+    if q:
+        queryset = queryset.filter(
+            Q(title__icontains=q) | Q(content__icontains=q)
+        )
+    
+    paginator = Paginator(queryset, 5)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "posts":page_obj,
+        "page_obj":page_obj,
+        "q":q,
+    }
+    return render(request, "books/post_list.html", context)
