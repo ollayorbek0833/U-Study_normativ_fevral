@@ -573,3 +573,37 @@ select:focus-visible {
         justify-content: center;
     }
 }
+
+/* Normativ 5: guest CTA on posts list */
+.auth-cta {
+    margin-bottom: 0.95rem;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px dashed rgba(184, 90, 59, 0.42);
+    background: linear-gradient(180deg, rgba(255, 250, 242, 0.92) 0%, rgba(255, 248, 238, 0.82) 100%);
+}
+
+.auth-cta-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.auth-cta-note {
+    margin: 0.72rem 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+@media (max-width: 780px) {
+    .auth-cta-actions {
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .auth-cta-actions .btn {
+        width: 100%;
+    }
+}
