@@ -17,19 +17,6 @@
 {% endblock %}
 
 {% block content %}
-
-{% if not user.is_authenticated%}
-    <div class="auth-cta surface">
-        <div class = "auth-cta-actions">
-            <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
-            <a class="btn btn-ghost" href="{% url 'register' %}">Register</a>
-        </div>    
-        <p class="auth-cta-note">
-            To create, edit, or delete posts, please log in or register for an account. This will allow you to fully engage with the content and contribute to the community.
-        </p>
-    </div>
-{% endif %}
-
 <section class="surface card-stack">
     {% if posts %}
         <ul class="book-grid">

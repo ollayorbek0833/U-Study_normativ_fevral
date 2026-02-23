@@ -2,11 +2,20 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.core.paginator import Paginator
-from django.contrib.auth import login
-
+from django.contrib.auth import login, logout
+from functools import wraps
 from books.forms import BookForm, LoginForm, RegisterForm
 from books.models import Book, Post
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.utils.decorators import method_decorator
+
+def login_required(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login")
+        return func(request, *args, **kwargs)
+    return wrapper
 
 # Create your views here.
 
@@ -17,7 +26,7 @@ class BookListView(ListView):
     context_object_name = "books"
     ordering = ["created_at"]
 
-
+@method_decorator(login_required, name="dispatch")
 class BookCreateView(CreateView):
     model = Book
     template_name = "books/book_form.html"
@@ -29,7 +38,7 @@ class BookCreateView(CreateView):
         ctx["mode"] = "create"
         return ctx
 
-
+@method_decorator(login_required, name="dispatch")
 class BookUpdateView(UpdateView):
     model = Book
     form_class = BookForm
@@ -39,7 +48,8 @@ class BookUpdateView(UpdateView):
         ctx = super().get_context_data(**kwargs)
         ctx["mode"] = "update"
         return ctx
-    
+
+@method_decorator(login_required, name="dispatch")    
 class BookDeleteView(DeleteView):
     model = Book
     template_name = "books/book_confirm_delete.html"
@@ -80,7 +90,6 @@ def register_view(request):
         form = RegisterForm()
     return render(request, "books/register.html", {"form":form})
 
-
 def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -92,3 +101,8 @@ def login_view(request):
         form = LoginForm()
     
     return render(request, "books/login.html", {"form":form})
+
+def logout_view(request):
+    logout(request)
+    return redirect("login")
+
